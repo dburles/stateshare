@@ -46,13 +46,13 @@ Template.users.events({
 Deps.autorun(function() {
   var presence;
   // If controlling
-  // presence = Meteor.presences.findOne({ userId: Session.get('controlling') });
-  // if (presence) {
-  //   // if (Router.current().path !== presence.state.path)
-  //   //   Router.go(presence.state.path);
+  presence = Meteor.presences.findOne({ userId: Session.get('controlling') });
+  if (presence) {
+    // if (Router.current().path !== presence.state.path)
+    Router.go(presence.state.path);
   //   // if (Session.get('scrollPos') !== presence.state.scrollPos)
   //     // $(window).scrollTop(presence.state.scrollPos);
-  // }
+  }
 
   // If under control
   presence = Meteor.presences.findOne({ 'state.controlling': Meteor.userId() });
