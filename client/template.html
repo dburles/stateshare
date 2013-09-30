@@ -1,0 +1,84 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="">
+
+  <title>State Share Test</title>
+</head>
+
+<template name="layout">
+  <div class="container">
+    <div class="header">
+      <ul class="nav nav-pills pull-right">
+        <li class="{{activePage 'home'}}"><a href="{{pathFor 'home'}}">Home</a></li>
+        <li class="{{activePage 'about'}}"><a href="{{pathFor 'about'}}">About</a></li>
+        <li class="{{activePage 'contact'}}"><a href="{{pathFor 'contact'}}">Contact</a></li>
+        <li class=""><a href="#">{{loginButtons}}</a></li>
+      </ul>
+      <h3 class="text-muted">State Share Test</h3>
+    </div>
+
+    {{#if isUnderControl}}
+      <div class="alert alert-info">
+        Your session is currently being controlled by: {{controller}}
+      </div>
+    {{/if}}
+    
+    <div class="row">
+      <div class="col-md-4">{{> users}}</div>
+      <div class="col-md-8">{{yield}}</div>
+    </div>
+  </div>
+</template>
+
+<template name="home">
+  <h1>home</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+</template>
+
+<template name="about">
+  <h1>about</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+</template>
+
+<template name="contact">
+  <h1>contact</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
+</template>
+
+<template name="users">
+  <div class="list-group">
+    {{#each users}}
+    <div class="list-group-item">
+      <h4 class="list-group-item-heading">{{state.email}}</h4>
+      <p class="list-group-item-text">
+        viewing: <span class="badge">{{state.path}}</span>
+        {{#unless me}}
+          {{#if controlling}}
+            <a class="btn btn-success uncontrol">Controlling</a>
+          {{else}}
+            <a class="btn btn-default control">Control</a>
+          {{/if}}
+        {{/unless}}
+      </p>
+    </div>
+    {{/each}}
+  </div>
+</template>
