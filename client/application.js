@@ -3,18 +3,18 @@ Meteor.subscribe('state');
 Meteor.subscribe('directory');
 
 Template.layout.helpers({
-  client: function() {
+  isClient: function() {
     return Session.equals('currentState', 'client');
   },
-  host: function() {
-    var state = State.findOne({ userId: Meteor.userId() });
+  isHost: function() {
+    return Session.equals('currentState', 'host');
+  },
+  hostEmail: function() {
+    var state = State.findOne({ clientUserId: Meteor.userId() });
     if (state) {
       var user = Meteor.users.findOne(state.hostUserId);
       return user && user.emails[0].address;
     }
-  },
-  isHost: function() {
-    return Session.equals('currentState', 'host');
   },
   activePage: function(routeName) {
     var context = Router.current();
@@ -23,16 +23,16 @@ Template.layout.helpers({
 });
 
 Template.users.helpers({
-  client: function() {
+  isClient: function() {
     return Session.equals('currentState', 'client');
   },
   users: function() {
     return Meteor.user() && Meteor.presences.find({ userId: { $exists: true }});
   },
-  me: function() {
+  isMe: function() {
     return this.userId === Meteor.userId();
   },
-  host: function() {
+  userIsHost: function() {
     return Session.equals('clientUserId', this.userId);
   }
 });
