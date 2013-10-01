@@ -78,7 +78,7 @@ Meteor.startup(function() {
         if (fields.lastAction)
           Session.set('lastAction', fields.lastAction);
 
-        if (Session.get('lastAction') === 'host') {
+        if (Session.equals('lastAction', 'host')) {
           if (fields.route)
             Router.go(fields.route);
 
@@ -109,7 +109,7 @@ Meteor.startup(function() {
         if (fields.lastAction)
           Session.set('lastAction', fields.lastAction);
 
-        if (Session.get('lastAction') === 'client') {
+        if (Session.equals('lastAction', 'client')) {
           if (fields.route)
             Router.go(fields.route);
 
