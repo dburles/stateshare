@@ -1,23 +1,23 @@
 Meteor.methods({
   control: function(userId) {
     if (typeof userId !== 'undefined' && Meteor.user()) {
-      State.remove({ userId: userId, controllerUserId: Meteor.userId() });
-      State.insert({ userId: userId, controllerUserId: Meteor.userId() });
+      State.remove({ clientUserId: userId, hostUserId: Meteor.userId() });
+      State.insert({ clientUserId: userId, hostUserId: Meteor.userId() });
     }
   },
   unControl: function(userId) {
     if (typeof userId !== 'undefined' && Meteor.user()) {
-      State.remove({ userId: userId, controllerUserId: Meteor.userId() });
+      State.remove({ clientUserId: userId, hostUserId: Meteor.userId() });
     }
   },
-  updateStateControlling: function(obj) {
+  updateStateHost: function(obj) {
     if (typeof obj !== 'undefined' && Meteor.user()) {
-      State.update({ controllerUserId: Meteor.userId() }, { $set: obj });
+      State.update({ hostUserId: Meteor.userId() }, { $set: _.extend(obj, { lastAction: 'host' }) });
     }
   },
-  updateStateControlled: function(obj) {
+  updateStateClient: function(obj) {
     if (typeof obj !== 'undefined' && Meteor.user()) {
-      State.update({ userId: Meteor.userId() }, { $set: obj });
+      State.update({ clientUserId: Meteor.userId() }, { $set: _.extend(obj, { lastAction: 'client' }) });
     }
   }
 });

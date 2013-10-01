@@ -3,18 +3,18 @@ Meteor.subscribe('state');
 Meteor.subscribe('directory');
 
 Template.layout.helpers({
-  isUnderControl: function() {
-    return !!Session.get('controlled');
+  client: function() {
+    return Session.equals('currentState', 'client');
   },
-  controller: function() {
+  host: function() {
     var state = State.findOne({ userId: Meteor.userId() });
     if (state) {
-      var user = Meteor.users.findOne(state.controllerUserId);
+      var user = Meteor.users.findOne(state.hostUserId);
       return user && user.emails[0].address;
     }
   },
-  isControlling: function() {
-    return !!Session.get('controlling');
+  isHost: function() {
+    return Session.equals('currentState', 'host');
   },
   activePage: function(routeName) {
     var context = Router.current();
@@ -23,8 +23,8 @@ Template.layout.helpers({
 });
 
 Template.users.helpers({
-  isUnderControl: function() {
-    return !!Session.get('controlled');
+  client: function() {
+    return Session.equals('currentState', 'client');
   },
   users: function() {
     return Meteor.user() && Meteor.presences.find({ userId: { $exists: true }});
@@ -32,8 +32,8 @@ Template.users.helpers({
   me: function() {
     return this.userId === Meteor.userId();
   },
-  controlling: function() {
-    return Session.equals('controlling', this.userId);
+  host: function() {
+    return Session.equals('clientUserId', this.userId);
   }
 });
 
@@ -59,56 +59,72 @@ Template.form.events({
     };
     Session.set('form', form);
 
-    if (Session.get('controlled')) {
-      Meteor.call('updateStateControlled', { form: form });
+    if (Session.equals('currentState', 'client')) {
+      Meteor.call('updateStateClient', { form: form });
     }
-    if (Session.get('controlling')) {
-      Meteor.call('updateStateControlling', { form: form });
+    if (Session.equals('currentState', 'host')) {
+      Meteor.call('updateStateHost', { form: form });
     }
   }
 });
 
 Meteor.startup(function() {
-  /**
-    observers for controlled
-  */
-  State.find({ userId: Meteor.userId() }).observeChanges({
-    changed: function (id, fields) {
-      if (fields.route)
-        Router.go(fields.route);
+  Deps.autorun(function() {
+    /**
+      observers for client
+    */
+    State.find({ clientUserId: Meteor.userId() }).observeChanges({
+      changed: function (id, fields) {
+        if (fields.lastAction)
+          Session.set('lastAction', fields.lastAction);
 
-      if (fields.form)
-        $('form').populate(fields.form);
-    },
-    added: function (id, fields) {
-      // update state so that controller gains current state
-      Meteor.call('updateStateControlled', {
-        route: Router.current().path,
-        form: Session.get('form')
-      });
-      Session.set('controlled', fields.controllerUserId);
-    },
-    removed: function (id) {
-      Session.set('controlled', '');
-    }
-  });
+        if (Session.get('lastAction') === 'host') {
+          if (fields.route)
+            Router.go(fields.route);
 
-  /**
-    observers for controller
-  */
-  State.find({ controllerUserId: Meteor.userId() }).observeChanges({
-    changed: function(id, fields) {
-      if (fields.route)
-        Router.go(fields.route);
+          if (fields.form)
+            $('form').populate(fields.form);
+        }
+      },
+      added: function (id, fields) {
+        // update state so that host gains current state
+        Meteor.call('updateStateClient', {
+          route: Router.current().path,
+          form: Session.get('form')
+        });
+        Session.set('hostUserId', fields.hostUserId);
+        Session.set('currentState', 'client');
+      },
+      removed: function (id) {
+        Session.set('hostUserId', '');
+        Session.set('currentState', '');
+      }
+    });
 
-      if (fields.form)
-        $('form').populate(fields.form);
-    },
-    added: function (id, fields) {
-      Session.set('controlling', fields.userId);
-    },
-    removed: function (id) {
-      Session.set('controlling', '');
-    }
+    /**
+      observers for host
+    */
+    State.find({ hostUserId: Meteor.userId() }).observeChanges({
+      changed: function(id, fields) {
+        if (fields.lastAction)
+          Session.set('lastAction', fields.lastAction);
+
+        if (Session.get('lastAction') === 'client') {
+          if (fields.route)
+            Router.go(fields.route);
+
+          if (fields.form)
+            $('form').populate(fields.form);
+        }
+      },
+      added: function (id, fields) {
+        Session.set('clientUserId', fields.clientUserId);
+        Session.set('currentState', 'host');
+      },
+      removed: function (id) {
+        Session.set('clientUserId', '');
+        Session.set('currentState', '');
+      }
+    });
   });
 });

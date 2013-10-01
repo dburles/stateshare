@@ -23,7 +23,7 @@
 
     {{#if isUnderControl}}
       <div class="alert alert-info">
-        Your session is currently being controlled by: {{controller}}
+        Your session is currently being controlled by: {{host}}
       </div>
     {{/if}}
     
@@ -93,10 +93,10 @@
       <p class="list-group-item-text">
         viewing: <span class="badge">{{state.route}}</span>
         {{#unless me}}
-          {{#if controlling}}
+          {{#if host}}
             <a class="btn btn-success uncontrol">Controlling</a>
           {{else}}
-            {{#unless isUnderControl}}
+            {{#unless client}}
               <a class="btn btn-default control">Control</a>
             {{/unless}}
           {{/if}}
