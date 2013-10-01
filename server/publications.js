@@ -6,3 +6,7 @@ Meteor.publish('userPresence', function() {
 Meteor.publish('directory', function() {
   return Meteor.users.find();
 });
+
+Meteor.publish('state', function() {
+  return State.find();
+});

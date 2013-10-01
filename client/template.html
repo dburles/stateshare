@@ -15,6 +15,7 @@
         <li class="{{activePage 'home'}}"><a href="{{pathFor 'home'}}">Home</a></li>
         <li class="{{activePage 'about'}}"><a href="{{pathFor 'about'}}">About</a></li>
         <li class="{{activePage 'contact'}}"><a href="{{pathFor 'contact'}}">Contact</a></li>
+        <li class="{{activePage 'form'}}"><a href="{{pathFor 'form'}}">Form</a></li>
         <li class=""><a href="#">{{loginButtons}}</a></li>
       </ul>
       <h3 class="text-muted">State Share Test</h3>
@@ -63,18 +64,41 @@
   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, officiis, pariatur architecto in perferendis commodi ipsum consequuntur explicabo iusto similique deserunt soluta hic id fuga aliquid optio fugiat voluptates iure.</p>
 </template>
 
+<template name="form">
+  <h1>form</h1>
+  <form role="form">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="name" class="form-control" id="name">
+    </div>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" class="form-control" id="email">
+    </div>
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea class="form-control" id="message"></textarea>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Post</button>
+    </div>
+  </form>
+</template>
+
 <template name="users">
   <div class="list-group">
     {{#each users}}
     <div class="list-group-item">
-      <h4 class="list-group-item-heading">{{state.email}}</h4>
+      <small class="list-group-item-heading">{{state.email}}</small>
       <p class="list-group-item-text">
-        viewing: <span class="badge">{{state.path}}</span>
+        viewing: <span class="badge">{{state.route}}</span>
         {{#unless me}}
           {{#if controlling}}
             <a class="btn btn-success uncontrol">Controlling</a>
           {{else}}
-            <a class="btn btn-default control">Control</a>
+            {{#unless isUnderControl}}
+              <a class="btn btn-default control">Control</a>
+            {{/unless}}
           {{/if}}
         {{/unless}}
       </p>
