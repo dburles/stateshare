@@ -109,9 +109,11 @@ Meteor.startup(function() {
         if (fields._lastAction)
           Session.set('lastAction', fields._lastAction);
 
-        _.each(fields, function(val, key) {
-          $('#' + key).val(val);
-        });
+        if (Session.equals('lastAction', 'host')) {
+          _.each(fields, function(val, key) {
+            $('#' + key).val(val);
+          });
+        }
       }
     });
 
@@ -153,9 +155,11 @@ Meteor.startup(function() {
         if (fields._lastAction)
           Session.set('lastAction', fields._lastAction);
 
-        _.each(fields, function(val, key) {
-          $('#' + key).val(val);
-        });
+        if (Session.equals('lastAction', 'client')) {
+          _.each(fields, function(val, key) {
+            $('#' + key).val(val);
+          });
+        }
       }
     });
   });
