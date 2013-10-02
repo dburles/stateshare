@@ -77,7 +77,7 @@ Meteor.startup(function() {
       observers for client
     */
     State.find({ clientUserId: Meteor.userId() }).observeChanges({
-      changed: function (id, fields) {
+      changed: function(id, fields) {
         if (fields._lastAction)
           Session.set('lastAction', fields._lastAction);
 
@@ -86,7 +86,7 @@ Meteor.startup(function() {
             Router.go(fields.route);
         }
       },
-      added: function (id, fields) {
+      added: function(id, fields) {
         // update state so that host gains current state
         Meteor.call('updateStateClient', {
           route: Router.current().path,
@@ -95,7 +95,7 @@ Meteor.startup(function() {
         Session.set('hostUserId', fields.hostUserId);
         Session.set('currentState', 'client');
       },
-      removed: function (id) {
+      removed: function(id) {
         Session.set('hostUserId', '');
         Session.set('currentState', '');
       }
@@ -127,11 +127,11 @@ Meteor.startup(function() {
             Router.go(fields.route);
         }
       },
-      added: function (id, fields) {
+      added: function(id, fields) {
         Session.set('clientUserId', fields.clientUserId);
         Session.set('currentState', 'host');
       },
-      removed: function (id) {
+      removed: function(id) {
         Session.set('clientUserId', '');
         Session.set('currentState', '');
       }
