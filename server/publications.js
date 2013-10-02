@@ -10,3 +10,7 @@ Meteor.publish('directory', function() {
 Meteor.publish('state', function() {
   return State.find();
 });
+
+Meteor.publish('stateFormData', function() {
+  return StateFormData.find();
+});
