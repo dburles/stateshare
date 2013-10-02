@@ -1,5 +1,6 @@
 Meteor.subscribe('userPresence');
 Meteor.subscribe('state');
+Meteor.subscribe('stateFormData');
 Meteor.subscribe('directory');
 
 Template.layout.helpers({
@@ -52,18 +53,20 @@ Template.users.events({
 
 Template.form.events({
   'keyup input, keyup textarea': function(event, template) {
-    var form = {
+    Session.set('form', {
       name: $('#name').val(),
       email: $('#email').val(),
       message: $('#message').val()
-    };
-    Session.set('form', form);
+    });
+
+    var update = {};
+    update[event.target.id] = event.target.value;
 
     if (Session.equals('currentState', 'client')) {
-      Meteor.call('updateStateClient', { form: form });
+      Meteor.call('updateStateFormDataClient', update);
     }
     if (Session.equals('currentState', 'host')) {
-      Meteor.call('updateStateHost', { form: form });
+      Meteor.call('updateStateFormDataHost', update);
     }
   }
 });
@@ -75,8 +78,8 @@ Meteor.startup(function() {
     */
     State.find({ clientUserId: Meteor.userId() }).observeChanges({
       changed: function (id, fields) {
-        if (fields.lastAction)
-          Session.set('lastAction', fields.lastAction);
+        if (fields._lastAction)
+          Session.set('lastAction', fields._lastAction);
 
         if (Session.equals('lastAction', 'host')) {
           if (fields.route)
@@ -101,20 +104,38 @@ Meteor.startup(function() {
       }
     });
 
+    StateFormData.find({ clientUserId: Meteor.userId() }).observeChanges({
+      changed: function(id, fields) {
+        if (fields._lastAction)
+          Session.set('lastAction', fields._lastAction);
+
+        _.each(fields, function(val, key) {
+          $('#' + key).val(val);
+        });
+      }
+    });
+
     /**
       observers for host
     */
     State.find({ hostUserId: Meteor.userId() }).observeChanges({
       changed: function(id, fields) {
-        if (fields.lastAction)
-          Session.set('lastAction', fields.lastAction);
+        if (fields._lastAction)
+          Session.set('lastAction', fields._lastAction);
 
         if (Session.equals('lastAction', 'client')) {
           if (fields.route)
             Router.go(fields.route);
 
-          if (fields.form)
-            $('form').populate(fields.form);
+          // console.log(fields);
+
+          // if (fields.form) {
+          //   // console.log(fields.form);
+          //   _.each(fields.form, function(element) {
+          //     console.log('populate: ', element);
+          //   });
+          //   // $('form').populate(fields.form);
+          // }
         }
       },
       added: function (id, fields) {
@@ -124,6 +145,17 @@ Meteor.startup(function() {
       removed: function (id) {
         Session.set('clientUserId', '');
         Session.set('currentState', '');
+      }
+    });
+
+    StateFormData.find({ hostUserId: Meteor.userId() }).observeChanges({
+      changed: function(id, fields) {
+        if (fields._lastAction)
+          Session.set('lastAction', fields._lastAction);
+
+        _.each(fields, function(val, key) {
+          $('#' + key).val(val);
+        });
       }
     });
   });
