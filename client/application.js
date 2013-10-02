@@ -84,9 +84,6 @@ Meteor.startup(function() {
         if (Session.equals('lastAction', 'host')) {
           if (fields.route)
             Router.go(fields.route);
-
-          // if (fields.form)
-          //   $('form').populate(fields.form);
         }
       },
       added: function (id, fields) {
@@ -128,16 +125,6 @@ Meteor.startup(function() {
         if (Session.equals('lastAction', 'client')) {
           if (fields.route)
             Router.go(fields.route);
-
-          // console.log(fields);
-
-          // if (fields.form) {
-          //   // console.log(fields.form);
-          //   _.each(fields.form, function(element) {
-          //     console.log('populate: ', element);
-          //   });
-          //   // $('form').populate(fields.form);
-          // }
         }
       },
       added: function (id, fields) {
