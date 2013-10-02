@@ -85,8 +85,8 @@ Meteor.startup(function() {
           if (fields.route)
             Router.go(fields.route);
 
-          if (fields.form)
-            $('form').populate(fields.form);
+          // if (fields.form)
+          //   $('form').populate(fields.form);
         }
       },
       added: function (id, fields) {
