@@ -1,5 +1,5 @@
 Meteor.publish('userPresence', function() {
-  var filter = {};
+  var filter = { userId: { $exists: true }};
   return Meteor.presences.find(filter, {fields: {state: true, userId: true}});
 });
 
