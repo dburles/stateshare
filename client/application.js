@@ -28,7 +28,7 @@ Template.users.helpers({
     return Session.equals('currentState', 'client');
   },
   users: function() {
-    return Meteor.user() && Meteor.presences.find({ userId: { $exists: true }});
+    return Meteor.user() && Meteor.presences.find();
   },
   isMe: function() {
     return this.userId === Meteor.userId();
