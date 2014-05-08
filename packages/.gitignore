@@ -3,3 +3,9 @@ presence
 bootstrap-3
 accounts-ui-bootstrap-3
 form2js-jquery
+/iron-router
+/bootstrap-3
+/accounts-ui-bootstrap-3
+/presence
+/blaze-layout
+/collection-helpers

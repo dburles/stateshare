@@ -16,20 +16,20 @@
         <li class="{{activePage 'about'}}"><a href="{{pathFor 'about'}}">About</a></li>
         <li class="{{activePage 'contact'}}"><a href="{{pathFor 'contact'}}">Contact</a></li>
         <li class="{{activePage 'form'}}"><a href="{{pathFor 'form'}}">Form</a></li>
-        <li class=""><a href="#">{{loginButtons}}</a></li>
+        <li class=""><a>{{> loginButtons}}</a></li>
       </ul>
       <h3 class="text-muted">State Share Test</h3>
     </div>
 
     {{#if isClient}}
       <div class="alert alert-info">
-        Your session is currently being controlled by: {{hostEmail}}
+        Your session is currently being controlled by: {{email}}
       </div>
     {{/if}}
     
     <div class="row">
       <div class="col-md-4">{{> users}}</div>
-      <div class="col-md-8">{{yield}}</div>
+      <div class="col-md-8">{{> yield}}</div>
     </div>
   </div>
 </template>
@@ -88,21 +88,25 @@
 <template name="users">
   <div class="list-group">
     {{#each users}}
-    <div class="list-group-item">
-      <small class="list-group-item-heading">{{state.email}}</small>
-      <p class="list-group-item-text">
-        viewing: <span class="badge">{{state.route}}</span>
-        {{#unless isMe}}
-          {{#if userIsHost}}
-            <a class="btn btn-success uncontrol">Controlling</a>
-          {{else}}
-            {{#unless isClient}}
-              <a class="btn btn-default control">Control</a>
-            {{/unless}}
-          {{/if}}
-        {{/unless}}
-      </p>
-    </div>
+      {{> user}}
     {{/each}}
+  </div>
+</template>
+
+<template name="user">
+  <div class="list-group-item">
+    <small class="list-group-item-heading">{{email}}</small>
+    <p class="list-group-item-text">
+      viewing: <span class="badge">{{route}}</span>
+      {{#unless isMe}}
+        {{#if isMyClient}}
+          <a class="btn btn-success uncontrol">Controlling</a>
+        {{else}}
+          {{#if imNotAClient}}
+            <a class="btn btn-default control">Control</a>
+          {{/if}}
+        {{/if}}
+      {{/unless}}
+    </p>
   </div>
 </template>

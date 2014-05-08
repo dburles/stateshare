@@ -1,8 +1,12 @@
 {
   "packages": {
     "iron-router": {},
-    "presence": {},
+    "presence": {
+      "git": "https://github.com/dburles/meteor-presence.git",
+      "branch": "no-state-field"
+    },
     "bootstrap-3": {},
-    "accounts-ui-bootstrap-3": {}
+    "accounts-ui-bootstrap-3": {},
+    "collection-helpers": {}
   }
 }
